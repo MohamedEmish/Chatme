@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatme.glide.GlideApp
 import com.example.chatme.model.ImageMessage
 import com.example.chatme.model.TextMessage
 import com.example.chatme.model.User
@@ -20,7 +19,6 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_chat.*
-import kotlinx.android.synthetic.main.fragment_my_account.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
