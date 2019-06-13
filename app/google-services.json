@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "226142124307",
+    "firebase_url": "https://chat-me-ff82d.firebaseio.com",
+    "project_id": "chat-me-ff82d",
+    "storage_bucket": "chat-me-ff82d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226142124307:android:5f0368184d3bc1d7",
+        "android_client_info": {
+          "package_name": "com.example.chatme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226142124307-9f1c5rtg2sppis1nejt5d8ce6g1dcpcb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaKVa4tHU6uMdm15vmbH7uGhL-K8ZMRK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226142124307-9f1c5rtg2sppis1nejt5d8ce6g1dcpcb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
