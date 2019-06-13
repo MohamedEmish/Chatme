@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatme.glide.GlideApp
 import com.example.chatme.model.ImageMessage
-import com.example.chatme.model.MessageType
 import com.example.chatme.model.TextMessage
 import com.example.chatme.model.User
 import com.example.chatme.util.FireStoreUtil
@@ -48,18 +47,21 @@ class ChatActivity : AppCompatActivity() {
 
         otherUserId = intent.getStringExtra(AppConstants.USER_ID)
 
-        FireStoreUtil.getOrCreateChatChannel(otherUserId){channelId ->
-            messageListenerRegistration = FireStoreUtil.addChatMessagrListener(channelId,this,this :: updateRecyclerView)
+        FireStoreUtil.getOrCreateChatChannel(otherUserId) { channelId ->
             currentChannelId = channelId
-            imageView_send.setOnClickListener {
-                val messageToBeSent = TextMessage(editText_message.text.toString(),
-                    Calendar.getInstance().time,
-                    FirebaseAuth.getInstance().currentUser!!.uid,
-                    otherUserId,
-                    currentUser.name)
 
+            messageListenerRegistration =
+                FireStoreUtil.addChatMessagrListener(channelId, this, this::updateRecyclerView)
+
+            imageView_send.setOnClickListener {
+                val messageToSend =
+                    TextMessage(
+                        editText_message.text.toString(), Calendar.getInstance().time,
+                        FirebaseAuth.getInstance().currentUser!!.uid,
+                        otherUserId, currentUser.name
+                    )
                 editText_message.setText("")
-                FireStoreUtil.sendMessage(messageToBeSent,channelId)
+                FireStoreUtil.sendMessage(messageToSend, channelId)
             }
 
             fab_send_image.setOnClickListener {
@@ -68,37 +70,33 @@ class ChatActivity : AppCompatActivity() {
                     action = Intent.ACTION_GET_CONTENT
                     putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg","image/png"))
                 }
-                startActivityForResult(Intent.createChooser(intent,"Select Image"), Companion.RC_SELECT_IMAGE)
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), RC_SELECT_IMAGE)
             }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == RC_SELECT_IMAGE
-            && resultCode == Activity.RESULT_OK
-            && data != null
-            && data.data != null) {
-
+        if (requestCode == RC_SELECT_IMAGE && resultCode == Activity.RESULT_OK &&
+            data != null && data.data != null
+        ) {
             val selectedImagePath = data.data
-            val selectedImageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImagePath)
 
-            val outPutStream = ByteArrayOutputStream()
-            selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outPutStream)
+            val selectedImageBmp = MediaStore.Images.Media.getBitmap(contentResolver, selectedImagePath)
 
-            val selectedImageBytes = outPutStream.toByteArray()
-            StorageUtil.uploadMessageImage(selectedImageBytes){imagePath->
-                val messageToSend = ImageMessage(
-                    imagePath,
-                    Calendar.getInstance().time,
-                    FirebaseAuth.getInstance().currentUser!!.uid,
-                    otherUserId,
-                    currentUser.name)
+            val outputStream = ByteArrayOutputStream()
 
-                FireStoreUtil.sendMessage(messageToSend,currentChannelId)
+            selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+            val selectedImageBytes = outputStream.toByteArray()
+
+            StorageUtil.uploadMessageImage(selectedImageBytes) { imagePath ->
+                val messageToSend =
+                    ImageMessage(
+                        imagePath, Calendar.getInstance().time,
+                        FirebaseAuth.getInstance().currentUser!!.uid,
+                        otherUserId, currentUser.name
+                    )
+                FireStoreUtil.sendMessage(messageToSend, currentChannelId)
             }
-            GlideApp.with(this)
-                .load(selectedImageBytes)
-                .into(imageView_profile_picture)
         }
     }
     private fun updateRecyclerView(messages: List<Item>){
