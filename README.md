@@ -9,7 +9,7 @@
 # Liberaries used
 
 - [Kotlin programing language](#kotlin-stdlib-jdk7:1.3.31)
-- [Anko](#anko:0.10.8 design and coroutines)
+- [Anko](#anko:0.10.8)
 - [Firebase: firestore,storage,messaging and auth] 
 - [Glide](#glide:4.9.0)
 - [Groupie: a recycler view builder](#groupie:2.0.3)
